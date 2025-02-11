@@ -24,7 +24,7 @@ pipeline {
                 script {
                     sh """
                         npx playwright install
-                        npx playwright test 
+                        npx playwright test --reporter=junit,html
                     """
                 }
             }
@@ -32,13 +32,24 @@ pipeline {
     }
 
     post {
-    always {
-        echo 'Checking if test results exist...'
-        sh 'ls -R test-results'  // Debugging step
+        always {
+            echo 'Checking if test results exist...'
+            sh 'ls -R test-results'  // Debugging step
+            sh 'ls -R playwright-report' // Debugging step
 
-        echo 'Archiving test reports...'
-        junit 'test-results/results.xml'  // Ensure path matches `playwright.config.ts`
-        archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true, fingerprint: true
+            echo 'Archiving test reports...'
+            junit 'test-results/results.xml'  // Ensure path matches `playwright.config.ts`
+            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true, fingerprint: true
+
+            echo 'Publishing HTML report...'
+            publishHTML([
+                allowMissing: true,
+                alwaysLinkToLastBuild: true,
+                keepAll: true,
+                reportDir: 'playwright-report',
+                reportFiles: 'index.html',
+                reportName: 'Playwright Test Report'
+            ])
+        }
     }
-}
 }
