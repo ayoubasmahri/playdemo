@@ -36,7 +36,7 @@ pipeline {
             echo 'Checking if test results exist...'
             sh 'ls -R test-results'  // Debugging step
             sh 'ls -R playwright-report' // Debugging step
-
+            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true, fingerprint: true
             echo 'Archiving test reports...'
             junit 'test-results/results.xml'  // Ensure path matches `playwright.config.ts`
             echo 'Publishing HTML report...'
