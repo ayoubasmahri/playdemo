@@ -24,7 +24,7 @@ pipeline {
                 script {
                     sh """
                         npx playwright install
-                        npx playwright test --reporter=junit,html
+                        npx playwright test 
                     """
                 }
             }
