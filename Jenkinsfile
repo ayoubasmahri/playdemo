@@ -38,6 +38,16 @@ pipeline {
             sh 'ls -R playwright-report' // Debugging step
              echo 'Publishing HTML report...'
             publishHTML([
+                allowMissing: false,
+                alwaysLinkToLastBuild: false,
+                keepAll: false,
+                reportDir: 'playwright-reports',
+                reportFiles: 'index.html',
+                reportName: 'Playwright Report',
+                reportTitles: '',
+                useWrapperFileDirectly: true
+            ])
+            publishHTML([
                 allowMissing: true,
                 alwaysLinkToLastBuild: true,
                 keepAll: true,
