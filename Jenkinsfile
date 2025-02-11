@@ -36,12 +36,22 @@ pipeline {
             echo 'Checking if test results exist...'
             sh 'ls -R test-results'  // Debugging step
             sh 'ls -R playwright-report' // Debugging step
-             echo 'Publishing HTML report...'
-            htmlPublisher([
-    allowMissingProperties: true,
-    reportDir: 'playwright-report',
-    reportFiles: 'index.html', // Or your report file name(s)s
-])
+            echo 'Publishing HTML report...'
+            sh '''
+             sed -i '1s/<head>/<head><meta http-equiv="Content-Security-Policy" content="sandbox allow-scripts allow-same-origin; default-src \'self\'; script-src \'self\' \'unsafe-inline\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data:;">/' playwright-report/index.html
+            '''
+
+            publishHTML([
+                allowMissing: true,
+                alwaysLinkToLastBuild: false,
+                keepAll: false,
+                reportDir: 'playwright-report',
+                reportFiles: 'index.html',
+                reportName: 'Playwright Report',
+                reportTitles: '',
+                useWrapperFileDirectly: true
+                csp: 'sandbox allow-scripts allow-same-origin; default-src \'self\'; script-src \'self\' \'unsafe-inline\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data:;'
+            ])
             echo 'Archiving test reports...'
             archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true, fingerprint: true
   // Ensure path matches `playwright.config.ts`
