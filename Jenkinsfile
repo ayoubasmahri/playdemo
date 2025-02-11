@@ -39,8 +39,6 @@ pipeline {
 
             echo 'Archiving test reports...'
             junit 'test-results/results.xml'  // Ensure path matches `playwright.config.ts`
-            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true, fingerprint: true
-
             echo 'Publishing HTML report...'
             publishHTML([
                 allowMissing: true,
