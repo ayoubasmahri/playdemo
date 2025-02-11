@@ -41,19 +41,11 @@ pipeline {
                 allowMissing: false,
                 alwaysLinkToLastBuild: false,
                 keepAll: false,
-                reportDir: 'playwright-reports',
+                reportDir: 'playwright-report',
                 reportFiles: 'index.html',
                 reportName: 'Playwright Report',
                 reportTitles: '',
                 useWrapperFileDirectly: true
-            ])
-            publishHTML([
-                allowMissing: true,
-                alwaysLinkToLastBuild: true,
-                keepAll: true,
-                reportDir: 'playwright-report',
-                reportFiles: 'index.html',
-                reportName: 'Playwright Test Report'
             ])
             echo 'Archiving test reports...'
             archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true, fingerprint: true
