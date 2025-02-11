@@ -38,7 +38,7 @@ pipeline {
             sh 'ls -R playwright-report' // Debugging step
              echo 'Publishing HTML report...'
             publishHTML([
-                allowMissing: false,
+                allowMissing: true,
                 alwaysLinkToLastBuild: false,
                 keepAll: false,
                 reportDir: 'playwright-report',
@@ -46,6 +46,7 @@ pipeline {
                 reportName: 'Playwright Report',
                 reportTitles: '',
                 useWrapperFileDirectly: true
+                csp: 'sandbox allow-scripts allow-same-origin; default-src \'self\'; script-src \'self\' \'unsafe-inline\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data:;'
             ])
             echo 'Archiving test reports...'
             archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true, fingerprint: true
