@@ -46,7 +46,6 @@ pipeline {
                 reportName: 'Playwright Test Report'
             ])
             echo 'Archiving test reports...'
-            junit 'test-results/results.xml'
             archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true, fingerprint: true
   // Ensure path matches `playwright.config.ts`
            
