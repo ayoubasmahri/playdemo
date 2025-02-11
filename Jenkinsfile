@@ -40,8 +40,7 @@ pipeline {
             htmlPublisher([
     allowMissingProperties: true,
     reportDir: 'playwright-report',
-    reportFiles: 'index.html', // Or your report file name(s)
-    csp: 'sandbox allow-scripts allow-same-origin; default-src \'self\'; script-src \'self\' \'unsafe-inline\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data:;' // Corrected: Added comma here
+    reportFiles: 'index.html', // Or your report file name(s)s
 ])
             echo 'Archiving test reports...'
             archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true, fingerprint: true
